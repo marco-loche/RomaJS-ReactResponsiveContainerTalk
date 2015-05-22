@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>react-responsive-container Talk - RomaJS 2015</title>
+
+    <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+    <meta name="author" content="Hakim El Hattab">
+
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/black.css" id="theme">
+    <link rel="stylesheet" href="css/print/pdf.css" id="theme">
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+<div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+        <section>
+            <img width="178" height="178" data-src="/resources/img/React.js_logo.svg" alt="Down arrow">
+
+            <h2>react-responsive-container</h2>
+
+            <p>A container component to manage your responsive application made with ReactJS</p>
+
+            <p>
+                <small>RomaJS - 20 may 2015</small>
+            </p>
+        </section>
+        <section>
+            <h2>W H A T</h2>
+            <ul>
+                <li>A ReactJS components primer</li>
+                <li>An opinionated categorization of Components with real example</li>
+                <li>A container component for responsive application : our point of view</li>
+            </ul>
+            <aside class="notes">
+                Why this talk
+                To introduce basic concept of ReactJS Components through a real SAP
+            </aside>
+        </section>
+        <section>
+            <h2>W H O</h2>
+
+            <div>
+                <div style="float:left">Marco Loche
+                    <hr>
+                    <small>@netamorfose</small>
+                </div>
+                <div style="float:right">Andrea Moretti
+                    <hr>
+                    <small>@axyz</small>
+                </div>
+            </div>
+            <aside class="notes">
+                Disclaimer
+                Based on personal experience and point of view
+                Not a show
+            </aside>
+        </section>
+        <!-- 1. A ReactJS components primer -->
+        <section>
+            <section>
+                <h2>A ReactJS components primer</h2>
+            </section>
+            <section>
+
+                <blockquote cite="#">
+                    &ldquo;Components are the right separation of concerns.&rdquo;
+                </blockquote>
+                <p style="  text-align: right; color: #555;">
+                    <small>- Tom Occhino - ReactConf Keynote 2015</small>
+                </p>
+            </section>
+            <section>
+                <h2>What is ReactJS ?</h2>
+                <p class="fragment" style="color:firebrick">Not yet another JS framework</p>
+            </section>
+            <section>
+                <h2>What is ReactJS ?</h2>
+                <p  ><strong>A JavaScript library</strong> to build User Interfaces</p>
+                <div class="fragment">
+                    <blockquote cite="#">
+                        &ldquo;Maybe the V in MVC but sometimes also the C it depends on how you use it.&rdquo;
+                    </blockquote>
+                    <p style="  text-align: right; color: #555;">
+                        <small>- Pete Hunt -  Rethinking Best Practices JSConfEU 2013</small>
+                    </p>
+
+                </div>
+                <aside class="notes">
+                    A performant view engine
+                    A way of defining reusable components
+                    Provides hooks into a well defined component life cycle
+                    A clever way to manage "smart" (stateful) and "dumb" (not stateful) components
+                    Virtual DOM diff-ing
+                    JSX
+                    Some optional "add-ons" (ie. measuring performance, animations, etc.)
+                </aside>
+            </section>
+            <section>
+                <h2>What does ReactJS do?</h2>
+                <p >Manage the rendering of your UI and respond to events.</p>
+                <p >Transform data  into  interface components</p>
+                <p >React compoenent are basically idempotent functions. <p>
+                <p><small>shhh! ...as it was in the 90s with server side rendering</small></p>
+                <aside class="notes">
+                    Come un applicazione Server side dove la singoo risorsa rispondeva a una request e rappresentava lo stato
+                    in React la nostra UI a un tempo t è una vista dello stato interno
+                </aside>
+            </section>
+            <section>
+                <h3 s>Separation of concerns!</h3>
+                <p class="fragment" >Reduce coupling</p>
+                <p class="fragment" >Increase cohesion</p>
+                <aside class="notes">
+                    Coupling : is the measure of how other modules you have to change while implementing a feature (or fix a bug) in  a mod
+                    templating system increase coupling
+
+                    Cohesion : single responsibility principle. Putting related functionality in a module.
+                    Those di behaviour belongs to the same class or shall we move them to separated classes
+                </aside>
+            </section>
+            <section>
+                <h2>Re-render don't mutate</h2>
+                <p class="fragment" >Re-render the whole app once the state changes.</p>
+                <p class="fragment" >Every component has  “state” and “props”</p>
+                <p class="fragment" >Acts as  an  “Immutable DOM”</p>
+                <aside class="notes">
+                </aside>
+            </section>
+            <section>
+                <h2>Virtual DOM</h2>
+                <p class="fragment" >JS is faster than DOM manipulation.</p>
+                <p class="fragment">optimized for performance and memory footorint</p>
+                <p class="fragment">Every update</p>
+                <ul class="fragment">
+                    <li class="fragment">Build new virtual DOM tree</li>
+                    <li class="fragment">...diffs with the old one</li>
+                    <li class="fragment">...computes the minimal set of DOM muttation and pute  them in a queue</li>
+                    <li class="fragment">...and batch executes all updates</li>
+                </ul>
+            
+                <aside class="notes">
+                </aside>
+            </section>
+            <section>
+                <p>App state/vents → React Component Render -> Virtual DOM -> Compute DO operations -> Browser                </p>
+                <img src="/resources/img/virtualDOM.png" style="background-color: white">
+            </section>
+            
+            <section>
+                <h2>Component</h2>
+                <ul>
+                    <li>Abstraction of a behaviour/functionality </li>
+                    <li>Reusable</li>
+                    <li>Composable</li>
+                    <li>Expressive</li>
+                    <li>Reduce complexity to O(n)</li>
+                    <li>Units -> so testable</li>
+                </ul>
+                 <aside class="notes">
+                </aside>
+            </section>
+            <section>
+                <h2>Thinking in react!</h2>
+                <p ><em style="color: dodgerblue">Dividi et Impera</em>: break the UI into a component hierarchy</p>
+                <img height="400px" data-src="/resources/img/breakui.png" >
+                <p>Component as unit of your UI</p>
+                <aside class="notes">
+                </aside>
+            </section>
+            <section>
+                <h2>Element of the UI as JavaScript functions</h2>
+                <p>Generating dom with function</p>
+                <pre>
+                    <code>
+
+React.createElement("div", null,
+    React.createElement(MyLabel, {text: TextLabel}),
+    React.createElement(MyTextfield, null),
+    React.createElement(MyButton, {textlabel: "OK"})
+                        );
+                     </code>
+                </pre>
+                <aside class="notes">
+                </aside>
+            </section>
+            <section  data-transition="none">
+                <h2>Element of the UI as JavaScript functions</h2>
+                <p>Generating dom with JSX</p>
+                <img style="border: 0;" height="150px" data-src="/resources/img/jsx.png" >
+                <h4><strong>This is JSX!</strong> Let designer be part of the process!</h4>
+                <aside class="notes">
+                </aside>
+            </section>
+            <section>
+                <h3 style="color:firebrick">Not a template!</h3>
+                <img height="400px" data-src="/resources/img/magritte_pipe.jpg" >
+                <h3>Component are highly cohesive building block for UIs loosely coupled with other components.</h3>
+                <aside class="notes">
+                    Template separate technologies and not concerns -> and they tend to be underpowered
+                    →  partials (embedding child partial in parent scope if you want to change a child you have to check all the parent using it)
+                    → limited functional programming
+                    → limited templating language
+
+                    View Model indeed are higly coesive.
+                </aside>
+            </section>
+            <section>
+                <h2>Component props</h2>
+                <p>Props are incoming arguments to a component</p>
+                <p>Can be typed through propTypes</p>
+                  <pre>
+                    <code>
+                        propTypes: {
+                        optionalArray: React.PropTypes.array,
+                        optionalBool: React.PropTypes.bool,
+                        optionalFunc: React.PropTypes.func,
+                        optionalNumber: React.PropTypes.number,
+                        ...
+                        }
+                    </code>
+                </pre>
+                <p>function as props are Synthetic event (short loop) </p>
+
+            </section>
+            <section>
+                <h2>Component state</h2>
+                <p>Internal state of the component</p>
+                <p>When state change component is re-rendered</p>
+            </section>
+
+            <section>
+                <h2>Component lifecycle</h2>
+                <ul>
+                    <li><code>getInitialState()</code></li>
+                    <li><code>getDefaultProps()</code></li>
+                    <li><code>componentWillMount()</code></li>
+                    <li><code>componentDidMount()</code></li>
+                    <li><code>componentWillReceiveProps()</code></li>
+                    <li><code>componentWillUpdate()</code></li>
+                    <li><code>componentDidUpdate()</code></li>
+                    <li><code>render()</code></li>
+                    <li><code>componentWillUnmount()</code></li>
+                </ul>
+            </section>
+            <section>
+                <h2>Component optimization</h2>
+                <ul>
+                    <li><code>shouldComponentUpdate()</code></li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Component testability</h2>
+                <p>React.TestUtils</p>
+                <p>Shallow rendering <span style="color:orange">experimental</span></p>
+            </section>
+        </section>
+
+        <!-- 2. An opinionated categorization of Components with real example -->
+        <section>
+            <section>
+                <h2>2. An opinionated categorization of Components with real example</h2>
+            </section>
+            <section>
+                <h2>Front controller component</h2>
+                <ul>
+                    <li>Application state</li>
+                    <li>Entry point of the data flow</li>
+                </ul>
+                <hr />
+                <h3 style="color: #666">CaLoApp.js <span style="color: #0000ff">code</span></h3>
+            </section>
+            <section>
+                <h2>Container component </h2>
+                <ul>
+                    <li>Don't render any DOM, they only render their child</li>
+                    <li>Don't have any props (and hence don't receive any data)</li>
+                    <li>Subscribe to stores, build state from the data they retrieve and pass that information down their children via props</li>
+                </ul>
+                <hr />
+                <h3 style="color: #666">react-responsive-container <span style="color: #0000ff">code</span></h3>
+            </section>
+            <section>
+                <h2>Behavioural component </h2>
+                <ul>
+                    <li>Receive props</li>
+                    <li>Can have state</li>
+                    <li>Have one or more children</li>
+                    <li>Render HTML for composition</li>
+                </ul>
+                <hr />
+                <h3 style="color: #666">Exercise  <span style="color: #0000ff">code</span></h3>
+            </section>
+
+            <section>
+                <h2>Simple component </h2>
+                <ul>
+                    <li>Receive props</li>
+                    <li>Don't have state</li>
+                    <li>Render HTML</li>
+                </ul>
+                <hr />
+                <h3 style="color: #666">Button  <span style="color: #0000ff">code</span></h3>
+            </section>
+        </section>
+
+
+        <!-- 3. A container component for responsive application : our point of view-->
+        <section>
+            <section>
+                <h2>3. A container component for responsive application : our point of view</h2>
+                <p><a href="https://github.com/marco-loche/react-responsive-container">https://github.com/marco-loche/react-responsive-container</a></p>
+                <p><a href="https://github.com/axyz/mediaquery">https://github.com/axyz/mediaquery</a></p>
+            </section>
+            <section>
+                <h2>Media Query</h2>
+                 <pre>
+                    <code>
+                        window.matchMedia()
+                    </code>
+                </pre>
+                <p><a href="https://github.com/axyz/mediaquery">https://github.com/axyz/mediaquery</a></p>
+            </section>
+            <section>
+                <h2>Responsive Container Component</h2>
+                 <pre>
+                    <code class="javascript">
+//ResponsiveRootComponent.jsx
+
+class ResponsiveRootComponent extends React.Component {
+  render () {
+    return (
+      <ResponsiveContainer mq={mediaQueries}>
+        <RootComponent />
+      </ResponsiveContainer>
+    );
+  }
+}
+
+                    </code>
+                </pre>
+            </section>
+            <section>
+                <h2>Root Component</h2>
+                 <pre>
+                    <code class="javascript">
+//RootComponent.jsx
+
+class RootComponent extends React.Component {
+  render () {
+    return <Children currentMedia={this.props.currentMedia} />;
+  }
+}
+                    </code>
+                </pre>
+                <p><a href="https://github.com/axyz/mediaquery">https://github.com/axyz/mediaquery</a></p>
+            </section>
+
+        </section>
+
+        <section>
+            <h2>Thank you!</h2>
+            <div style="float:left">Marco Loche
+                <hr>
+                <small>@netamorfose</small>
+            </div>
+            <div style="float:right">Andrea Moretti
+                <hr>
+                <small>@axyz</small>
+            </div>
+        </section>
+
+
+    </div>
+
+</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
+
+<script>
+
+    // Full list of configuration options available at:
+    // https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+        // Optional reveal.js plugins
+        dependencies: [
+            {
+                src: 'lib/js/classList.js', condition: function () {
+                return !document.body.classList;
+            }
+            },
+            {
+                src: 'plugin/markdown/marked.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            }
+            },
+            {
+                src: 'plugin/markdown/markdown.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            }
+            },
+            {
+                src: 'plugin/highlight/highlight.js', async: true, condition: function () {
+                return !!document.querySelector('pre code');
+            }, callback: function () {
+                hljs.initHighlightingOnLoad();
+            }
+            },
+            {src: 'plugin/zoom-js/zoom.js', async: true},
+            {src: 'plugin/notes/notes.js', async: true}
+        ]
+    });
+
+</script>
+
+</body>
+</html>
